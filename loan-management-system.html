@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan Management System</title>
+  <style>
+    :root {
+      --bg: #f4f6fb;
+      --card: #ffffff;
+      --text: #1f2d3d;
+      --muted: #6b7280;
+      --primary: #2f4359;
+      --blue: #3498db;
+      --green: #2ecc71;
+      --yellow: #f1c40f;
+      --gray: #636e72;
+      --border: #d9dee7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text)
+    }
+
+    .wrap {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .05)
+    }
+
+    .hero {
+      background: var(--primary);
+      color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      margin-bottom: 24px
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 10px
+    }
+
+    .muted {
+      color: var(--muted)
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px
+    }
+
+    .stats {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin: 22px 0
+    }
+
+    .stat {
+      padding: 18px;
+      border-left: 5px solid var(--blue)
+    }
+
+    .stat.green {
+      border-color: var(--green)
+    }
+
+    .stat.yellow {
+      border-color: var(--yellow)
+    }
+
+    .stat.gray {
+      border-color: #2c3e50
+    }
+
+    .stat h3 {
+      font-size: 14px;
+      color: #555
+    }
+
+    .stat p {
+      font-size: 38px;
+      font-weight: 700;
+      margin-top: 8px
+    }
+
+    .actions {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin: 16px 0 24px
+    }
+
+    button,
+    .btn {
+      border: none;
+      border-radius: 6px;
+      padding: 14px 16px;
+      color: #fff;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block
+    }
+
+    .btn-blue {
+      background: var(--blue)
+    }
+
+    .btn-dark {
+      background: #2f4359
+    }
+
+    .btn-green {
+      background: #29b765
+    }
+
+    .btn-gray {
+      background: #6e6e6e
+    }
+
+    .btn-red {
+      background: #e74c3c
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      background: #fff
+    }
+
+    th,
+    td {
+      border: 1px solid var(--border);
+      padding: 12px;
+      text-align: left
+    }
+
+    th {
+      background: #f2f4f8
+    }
+
+    .badge {
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+      display: inline-block
+    }
+
+    .pending {
+      background: #ffe082
+    }
+
+    .approved {
+      background: #c8f7c5
+    }
+
+    .rejected {
+      background: #ffcdd2
+    }
+
+    .section {
+      padding: 20px;
+      margin-top: 22px
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #cfd6e4;
+      border-radius: 6px;
+      margin-top: 6px
+    }
+
+    label {
+      font-weight: 700;
+      display: block;
+      margin-top: 12px
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      flex-wrap: wrap
+    }
+
+    .hide {
+      display: none
+    }
+
+    .auth {
+      max-width: 420px;
+      margin: 60px auto;
+      padding: 24px
+    }
+
+    .small {
+      font-size: 13px
+    }
+
+    .pill {
+      background: #eef3ff;
+      color: #2f4359;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div id="loginPage" class="card auth">
+      <h2>Loan Management System</h2>
+      <p class="muted" style="margin-bottom:12px">Single HTML demo file for browser use.</p>
+      <label>Login as</label>
+      <select id="role">
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
+      <label>Name</label>
+      <input id="name" value="Krishnan" />
+      <button class="btn btn-dark" style="width:100%;margin-top:16px" onclick="login()">Enter Dashboard</button>
+      <p class="small muted" style="margin-top:12px">Use User mode to apply for loans and Admin mode to approve or
+        reject.</p>
+    </div>
+    <div id="appPage" class="hide">
+      <div class="topbar">
+        <span class="pill" id="roleTag"></span>
+        <button class="btn btn-red" onclick="logout()">Logout</button>
+      </div>
+      <div id="userView" class="hide">
+        <div class="hero card">
+          <h1 id="welcomeText">Welcome back!</h1>
+          <p>Manage your loans and payments from your personal dashboard.</p>
+        </div>
+        <div class="grid stats">
+          <div class="card stat">
+            <h3>TOTAL APPLICATIONS</h3>
+            <p id="totalApps">0</p>
+          </div>
+          <div class="card stat green">
+            <h3>ACTIVE LOANS</h3>
+            <p id="activeLoans">0</p>
+          </div>
+          <div class="card stat yellow">
+            <h3>PENDING</h3>
+            <p id="pendingLoans">0</p>
+          </div>
+          <div class="card stat gray">
+            <h3>TOTAL PAID</h3>
+            <p id="totalPaid">₹0</p>
+          </div>
+        </div>
+        <h2>Quick Actions</h2>
+        <div class="grid actions">
+          <button class="btn btn-blue" onclick="showSection('applySec')">Apply for a New Loan</button>
+          <button class="btn btn-dark" onclick="showSection('statusSec')">Check Loan Status</button>
+          <button class="btn btn-green" onclick="showSection('paymentSec')">Make EMI Payment</button>
+          <button class="btn btn-gray" onclick="showSection('historySec')">View Payment History</button>
+        </div>
+        <div id="applySec" class="card section">
+          <h2>Apply for Loan</h2>
+          <div class="row">
+            <div>
+              <label>Loan Type</label>
+              <select id="loanType">
+                <option>Personal Loan</option>
+                <option>Education Loan</option>
+                <option>Home Loan</option>
+                <option>Vehicle Loan</option>
+              </select>
+            </div>
+            <div>
+              <label>Amount</label>
+              <input type="number" id="loanAmount" placeholder="Enter amount" />
+            </div>
+            <div>
+              <label>Interest %</label>
+              <input type="number" id="interest" value="10" />
+            </div>
+            <div>
+              <label>Months</label>
+              <input type="number" id="months" value="84" />
+            </div>
+          </div>
+          <button class="btn btn-blue" style="margin-top:16px" onclick="applyLoan()">Submit Application</button>
+          <p class="small muted" style="margin-top:10px">EMI is auto-calculated when you apply.</p>
+        </div>
+        <div id="statusSec" class="card section hide">
+          <h2>Recent Loan Applications</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Loan Type</th>
+                <th>Amount</th>
+                <th>EMI</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="loanTable"></tbody>
+          </table>
+        </div>
+        <div id="paymentSec" class="card section hide">
+          <h2>Make EMI Payment</h2>
+          <label>Select Approved Loan</label>
+          <select id="approvedLoanSelect"></select>
+          <label>Payment Amount</label>
+          <input type="number" id="paymentAmount" placeholder="Enter payment amount" />
+          <button class="btn btn-green" style="margin-top:16px" onclick="makePayment()">Pay EMI</button>
+        </div>
+        <div id="historySec" class="card section hide">
+          <h2>Payment History</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Loan Type</th>
+                <th>Amount Paid</th>
+                <th>Date</th>
+              </tr>
+            </thead>
+            <tbody id="paymentTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div id="adminView" class="hide">
+        <div class="hero card">
+          <h1>Admin Dashboard</h1>
+          <p>Review loan applications and approve or reject applicants.</p>
+        </div>
+        <div class="card section">
+          <h2>All Loan Applications</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Applicant</th>
+                <th>Loan Type</th>
+                <th>Amount</th>
+                <th>EMI</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminLoanTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    let currentRole = 'user';
+    let currentUser = 'Krishnan';
+    const BASE_URL = "http://localhost:3000";
+    function formatMoney(n) {
+      return '₹' + Number(n).toLocaleString('en-IN', { maximumFractionDigits: 2 });
+    }
+    function calcEMI(p, annualRate, months) {
+      const r = annualRate / 12 / 100;
+      return (p * r * Math.pow(1 + r, months)) / (Math.pow(1 + r, months) - 1);
+    }
+    function login() {
+      currentRole = document.getElementById('role').value;
+      currentUser = document.getElementById('name').value || 'Krishnan';
+
+      document.getElementById('loginPage').classList.add('hide');
+      document.getElementById('appPage').classList.remove('hide');
+
+      document.getElementById('roleTag').textContent = currentRole.toUpperCase() + ' MODE';
+      document.getElementById('welcomeText').textContent = 'Welcome back, ' + currentUser + '!';
+
+      document.getElementById('userView').classList.toggle('hide', currentRole !== 'user');
+      document.getElementById('adminView').classList.toggle('hide', currentRole !== 'admin');
+
+      refreshUI();
+    }
+    function logout() {
+      location.reload();
+    }
+    function showSection(id) {
+      ['applySec', 'statusSec', 'paymentSec', 'historySec'].forEach(x => document.getElementById(x).classList.add('hide'));
+      document.getElementById(id).classList.remove('hide');
+      refreshUI();
+    }
+    async function applyLoan() {
+      const type = document.getElementById('loanType').value;
+      const amount = +document.getElementById('loanAmount').value;
+      const interest = +document.getElementById('interest').value;
+      const months = +document.getElementById('months').value;
+      if (!amount || amount <= 0) return alert('Enter valid loan amount');
+      const emi = calcEMI(amount, interest, months).toFixed(2);
+      await fetch(`${BASE_URL}/apply-loan`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_name: currentUser,
+          loan_type: type,
+          amount,
+          interest,
+          months,
+          emi
+        })
+      });
+      alert('Loan applied successfully');
+      document.getElementById('loanAmount').value = '';
+      refreshUI();
+      showSection('statusSec');
+    }
+    async function makePayment() {
+      const id = +document.getElementById('approvedLoanSelect').value;
+      const amount = +document.getElementById('paymentAmount').value;
+      if (!id) return alert('Select an approved loan');
+      if (!amount || amount <= 0) return alert('Enter valid payment amount');
+      await fetch(`${BASE_URL}/make-payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          loan_id: id,
+          user_name: currentUser,
+          amount
+        })
+      });
+      alert('Payment successful');
+      document.getElementById('paymentAmount').value = '';
+      refreshUI();
+      showSection('historySec');
+    }
+    async function updateUserStats() {
+      const loansRes = await fetch(`${BASE_URL}/user-loans/${currentUser}`);
+      const myLoans = await loansRes.json();
+      const payRes = await fetch(`${BASE_URL}/payments/${currentUser}`);
+      const myPayments = await payRes.json();
+      document.getElementById('totalApps').textContent = myLoans.length;
+      document.getElementById('activeLoans').textContent = myLoans.filter(l => l.status === 'Approved').length;
+      document.getElementById('pendingLoans').textContent = myLoans.filter(l => l.status === 'Pending').length;
+      document.getElementById('totalPaid').textContent = formatMoney(myPayments.reduce((s, p) => s + p.amount, 0));
+      document.getElementById('loanTable').innerHTML = myLoans.map(l => `
+    <tr>
+      <td>${l.loan_type}</td>
+      <td>${formatMoney(l.amount)}</td>
+      <td>${formatMoney(l.emi)}</td>
+      <td><span class="badge ${l.status.toLowerCase()}">${l.status}</span></td>
+    </tr>`).join('') || '<tr><td colspan="4">No applications yet</td></tr>';
+      const approved = myLoans.filter(l => l.status === 'Approved');
+      document.getElementById('approvedLoanSelect').innerHTML =
+        '<option value="">Select</option>' +
+        approved.map(l => `<option value="${l.loan_id}">${l.loan_type} - ${formatMoney(l.emi)}</option>`).join('');
+      document.getElementById('paymentTable').innerHTML = myPayments.map(p => `
+    <tr>
+      <td>Loan #${p.loan_id}</td>
+      <td>${formatMoney(p.amount)}</td>
+      <td>${new Date(p.payment_date).toLocaleDateString()}</td>
+    </tr>`).join('') || '<tr><td colspan="3">No payments yet</td></tr>';
+    }
+    async function updateAdminTable() {
+      const res = await fetch(`${BASE_URL}/all-loans`);
+      const loans = await res.json();
+      document.getElementById('adminLoanTable').innerHTML = loans.map(l => `
+    <tr>
+      <td>${l.user_name}</td>
+      <td>${l.loan_type}</td>
+      <td>${formatMoney(l.amount)}</td>
+      <td>${formatMoney(l.emi)}</td>
+      <td><span class="badge ${l.status.toLowerCase()}">${l.status}</span></td>
+      <td>
+        <button class="btn btn-green" onclick="changeStatus(${l.loan_id}, 'Approved')">Approve</button>
+        <button class="btn btn-red" onclick="changeStatus(${l.loan_id}, 'Rejected')">Reject</button>
+      </td>
+    </tr>`).join('');
+    }
+    async function changeStatus(id, status) {
+      await fetch(`${BASE_URL}/update-status`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ loan_id: id, status })
+      });
+      refreshUI();
+    }
+    function refreshUI() {
+      updateUserStats();
+      updateAdminTable();
+    }
+  </script>
+</body>
+</html>
